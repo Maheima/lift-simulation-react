@@ -6,14 +6,13 @@ import {
   faCircleChevronDown,
 } from '@fortawesome/free-solid-svg-icons';
 
-const Controls = () => {
+const Building = () => {
   const [numberOfFloors, setNumberOfFloors] = useState(1);
   const [numberOfElevators, setNumberOfElevators] = useState(1);
 
   // const floorsArr = new Array(numberOfFloors);
 
   const floors = Array.from({ length: numberOfFloors }).map((val, index) => {
-    
     return (
       <div className="floor_container" id={index}>
         <div className="arrow_container">
@@ -29,7 +28,6 @@ const Controls = () => {
             data-testid="arrowDown"
             size="2xl"
             icon={faCircleChevronDown}
-            onClick={moveLiftTo()}
           />
         </div>
       </div>
@@ -109,4 +107,4 @@ const Controls = () => {
   );
 };
 
-export default Controls;
+export default Building;

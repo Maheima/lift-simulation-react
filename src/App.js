@@ -1,13 +1,10 @@
 import './App.css';
-import Controls from './components/Controls/Controls';
+import Building from './components/Building/Building';
 
 function App() {
- 
-
   return (
     <div className="App">
-      <Controls />
-     
+      <Building />
     </div>
   );
 }

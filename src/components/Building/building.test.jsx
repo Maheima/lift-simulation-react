@@ -1,8 +1,8 @@
 import { screen, render } from '@testing-library/react';
-import Controls from './Controls';
+import Building from './Building';
 describe('main body', () => {
   it('should render two arrows', () => {
-    render(<Controls />);
+    render(<Building />);
     const arrowUp = screen.getByTestId('arrowUp');
     const arrowDown = screen.getByTestId('arrowDown');
     expect(arrowUp).toBeInTheDocument();
