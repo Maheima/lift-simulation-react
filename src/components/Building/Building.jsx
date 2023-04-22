@@ -68,7 +68,7 @@ const Building = () => {
     if (!freeElevators) return;
     freeElevators.currentPos = distance;
     freeElevators.state = 'busy';
-    freeElevators.transitionDuration = Math.abs(freeElevators.currentFloor-calledFloor) * 1;
+    freeElevators.transitionDuration = Math.abs(freeElevators.currentFloor-calledFloor) * 2;
     freeElevators.currentFloor = calledFloor;
     console.log('first', freeElevators);
     setElevatorState([...newState]);
