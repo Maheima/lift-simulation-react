@@ -7,10 +7,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Controls = () => {
-  const [floorArr, setFloorArr] = useState([1]);
-  const [elevators, setElevators] = useState([1]);
+  const [numberOfFloors, setNumberOfFloors] = useState(1);
+  const [numberOfElevators, setNumberOfElevators] = useState(1);
 
-  const floors = floorArr.map((val, index) => {
+  const floors = Array.from({ length: numberOfFloors }).map((val, index) => {
+    const calledFloor = numberOfFloors - index
     return (
       <div className="floor_container" id={index}>
         <div className="arrow_container">
@@ -20,57 +21,53 @@ const Controls = () => {
             size="2xl"
             icon={faCircleChevronUp}
           />
+          {numberOfFloors - index}
           <FontAwesomeIcon
             className="arrow down"
-            data-testid='arrowDown'
-
+            data-testid="arrowDown"
             size="2xl"
             icon={faCircleChevronDown}
           />
         </div>
-        {index === 0 &&
-          elevators.map((val, index) => {
-            return (
-              <div className="elevator">
-                <div className="door"></div>
-                <div className="door"></div>
-              </div>
-            );
-          })}
       </div>
     );
   });
 
+  const elevators = Array.from({ length: numberOfElevators }).map(
+    (val, index) => {
+      return (
+        <div
+          className="elevator"
+          key={index}
+          style={{ bottom: '0px', left: `${50 + index * 60}px` }}
+        >
+          <div className="door"></div>
+          <div className="door"></div>
+        </div>
+      );
+    }
+  );
+
   function removeFloor() {
-    if (floorArr.length === 1) return;
-    floorArr.pop();
-    setFloorArr(() => {
-      return [...floorArr];
-    });
+    if (numberOfFloors === 1) return;
+    setNumberOfFloors(numberOfFloors - 1);
   }
 
   function addFloor() {
-    setFloorArr((prevItems) => {
-      return prevItems.concat(1);
-    });
+    setNumberOfFloors(numberOfFloors + 1);
   }
 
   function addElevator() {
-    setElevators((prevItems) => {
-      return prevItems.concat(1);
-    });
+    setNumberOfElevators(numberOfElevators + 1);
   }
 
   function removeElevator() {
-    if (elevators.length === 1) return;
-    elevators.pop();
-    setElevators(() => {
-      return [...elevators];
-    });
+    if (numberOfElevators === 1) return;
+    setNumberOfElevators(numberOfElevators - 1);
   }
 
   return (
-    <>
+    <div className="building">
       <div className="controls_container">
         <div className="elevator_controls">
           <div className="floor_btn">
@@ -104,7 +101,8 @@ const Controls = () => {
         </div>
       </div>
       {floors}
-    </>
+      {elevators}
+    </div>
   );
 };
 

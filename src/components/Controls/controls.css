@@ -61,12 +61,6 @@
 }
 
 .elevator {
-  height: 100px;
-  width: 50px;
-  margin: 0 1%;
-  background-color: aquamarine;
-  border: 1px solid black;
-  display: flex;
 }
 
 .door {
@@ -75,4 +69,18 @@
   background-color: lightblue;
   border: 1px solid coral;
   transition: all ease-in 1s;
+}
+
+.building {
+  position: relative;
+}
+
+.elevator {
+  position: absolute;
+  height: 100px;
+  width: 50px;
+  margin: 0 10px;
+  background-color: aquamarine;
+  border: 1px solid black;
+  display: flex;
 }
