@@ -1,0 +1,86 @@
+.controls_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2%;
+}
+
+.elevator_controls,
+.lift_controls {
+  display: flex;
+}
+
+.btn {
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin: 2px 10px;
+  background-color: aliceblue;
+}
+
+.remove {
+  border: 1px solid red;
+}
+
+.add {
+  border: 1px solid midnightblue;
+}
+
+.btn:hover {
+  background-color: powderblue;
+}
+
+@media (min-width: 700px) {
+  .controls_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.arrow_container {
+  padding: 1%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.arrow_container .arrow:hover {
+  transform: scale(1.07);
+  opacity: 0.9;
+  transition: all ease-in-out 0.2s;
+}
+
+.floor_container {
+  display: flex;
+  width: 100%;
+  margin: 10px 0;
+  border: 1px solid black;
+  height: 100px;
+}
+
+.elevator {
+}
+
+.door {
+  width: 50%;
+  height: 100px;
+  background-color: lightblue;
+  border: 1px solid coral;
+  transition: all ease-in 1s;
+}
+
+.building {
+  position: relative;
+}
+
+.elevator {
+  position: absolute;
+  height: 100px;
+  width: 50px;
+  margin: 0 10px;
+  background-color: aquamarine;
+  border: 1px solid black;
+  display: flex;
+}
