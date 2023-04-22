@@ -7,13 +7,19 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Building = () => {
+  const [elevatorState, setElevatorState] = useState([]);
+  /**
+   * {
+   * state: busy/free,
+   * currentPos:
+   *
+   * }
+   */
   const [numberOfFloors, setNumberOfFloors] = useState(1);
-  const [numberOfElevators, setNumberOfElevators] = useState(1);
-
-  // const floorsArr = new Array(numberOfFloors);
 
   const floors = Array.from({ length: numberOfFloors }).map((val, index) => {
     const calledFloor = numberOfFloors - index;
+
     return (
       <div className="floor_container" id={index}>
         <div className="arrow_container">
@@ -29,26 +35,48 @@ const Building = () => {
             data-testid="arrowDown"
             size="2xl"
             icon={faCircleChevronDown}
+            onClick={() => moveLiftTo(calledFloor)}
           />
         </div>
       </div>
     );
   });
 
-  const elevators = Array.from({ length: numberOfElevators }).map(
-    (val, index) => {
-      return (
-        <div
-          className="elevator"
-          key={index}
-          style={{ bottom: '0px', left: `${50 + index * 60}px` }}
-        >
-          <div className="door"></div>
-          <div className="door"></div>
-        </div>
-      );
-    }
-  );
+  const elevators = elevatorState.map((val, index) => {
+    let newPos = val.currentPos;
+    let duration = val.transitionDuration;
+    return (
+      <div
+        className="elevator"
+        key={index}
+        style={{
+          bottom: `${newPos}px`,
+          left: `${50 + index * 60}px`,
+          transition: `all ${duration}s linear`,
+        }}
+      >
+        <div className="door"></div>
+        <div className="door"></div>
+      </div>
+    );
+  });
+
+  function moveLiftTo(calledFloor) {
+    let distance = (calledFloor - 1) * 110;
+    let newState = [...elevatorState];
+    let freeElevators = newState.find((ele) => ele.state === 'free');
+    if (!freeElevators) return;
+    freeElevators.currentPos = distance;
+    freeElevators.state = 'busy';
+    freeElevators.transitionDuration = Math.abs(freeElevators.currentFloor-calledFloor) * 1;
+    freeElevators.currentFloor = calledFloor;
+    console.log('first', freeElevators);
+    setElevatorState([...newState]);
+
+    setTimeout(() => {
+      freeElevators.state = 'free';
+    }, 1000 * 2 + 5000);
+  }
 
   function removeFloor() {
     if (numberOfFloors === 1) return;
@@ -60,12 +88,24 @@ const Building = () => {
   }
 
   function addElevator() {
-    setNumberOfElevators(numberOfElevators + 1);
+    setElevatorState((prev) => {
+      return [
+        ...prev,
+        {
+          state: 'free',
+          currentPos: 0,
+          transitionDuration: 0,
+          currentFloor: 0
+        },
+      ];
+    });
   }
-
   function removeElevator() {
-    if (numberOfElevators === 1) return;
-    setNumberOfElevators(numberOfElevators - 1);
+    if (elevatorState.length === 1) return;
+    elevatorState.pop();
+    setElevatorState(() => {
+      return [...elevatorState];
+    });
   }
 
   return (
