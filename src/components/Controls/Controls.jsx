@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import './controls.css';
-import Floor from '../Floor/Floor';
-import ArrowButtons from '../ArrowButtons/ArrowButtons';
-import { ElevatorList } from '../Elevator/Elevator';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleChevronUp,
@@ -11,7 +8,6 @@ import {
 
 const Controls = () => {
   const [floorArr, setFloorArr] = useState([1]);
-  const [floorClickArr, setFloorClickArr] = useState([]);
   const [elevators, setElevators] = useState([1]);
 
   const floors = floorArr.map((val, index) => {
