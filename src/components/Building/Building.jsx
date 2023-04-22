@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './controls.css';
+import './building.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleChevronUp,
