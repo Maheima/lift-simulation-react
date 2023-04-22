@@ -13,6 +13,7 @@ const Building = () => {
   // const floorsArr = new Array(numberOfFloors);
 
   const floors = Array.from({ length: numberOfFloors }).map((val, index) => {
+    const calledFloor = numberOfFloors - index;
     return (
       <div className="floor_container" id={index}>
         <div className="arrow_container">
@@ -22,7 +23,7 @@ const Building = () => {
             size="2xl"
             icon={faCircleChevronUp}
           />
-          {numberOfFloors - index}
+          {calledFloor}
           <FontAwesomeIcon
             className="arrow down"
             data-testid="arrowDown"
