@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './Building.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,8 +10,6 @@ const Building = () => {
   const [elevatorState, setElevatorState] = useState([]);
   const [liftReqQueue, setLiftReqQueue] = useState([]);
   
-  const [doorStyle, setDoorStyle] = useState({});
-
   const [numberOfFloors, setNumberOfFloors] = useState(1);
   
   function removeFloor() {
