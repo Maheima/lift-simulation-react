@@ -58,6 +58,7 @@ const Building = () => {
             data-testid="arrowUp"
             size="2xl"
             icon={faCircleChevronUp}
+            onClick={() => moveLiftTo(floorNumber)}
           />
           {floorNumber}
           <FontAwesomeIcon
