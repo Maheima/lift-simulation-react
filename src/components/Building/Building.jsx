@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './Building.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,10 +8,10 @@ import {
 
 const Building = () => {
   const [elevatorState, setElevatorState] = useState([]);
-  const [liftReqQueue, setLiftReqQueue] = useState([]);
-  
+  // const [liftReqQueue, setLiftReqQueue] = useState([]);
+  let liftReqQueue = useRef([]);
   const [numberOfFloors, setNumberOfFloors] = useState(1);
-  
+
   function removeFloor() {
     if (numberOfFloors === 1) return;
     setNumberOfFloors(numberOfFloors - 1);
@@ -35,7 +35,7 @@ const Building = () => {
           transitionDuration: 0,
           currentFloor: 0,
           isDoorOpen: false,
-          dStyle: { width: '50%'},
+          dStyle: { width: '50%' },
         },
       ];
     });
@@ -91,62 +91,19 @@ const Building = () => {
     );
   });
 
-  // function freeELevatorStates(freeElevatorIndex, duration) {
-  //   let doorOpeningDuration = duration * 1000;
-  //   let doorClosingDuration = duration * 1000 + 2500;
-  //   let liftFreeDuration = duration * 1000 + 5000;
-  //   console.log('liftReqQueue is the', liftReqQueue)
-  //   setTimeout(() => {
-  //     let newArray = [...elevatorState];
-  //     newArray[freeElevatorIndex].dStyle = { width: '0px' , transition: 'all ease-in-out 2.5s'};
-  //     console.log('Inside 1st setTimeout', freeElevatorIndex);
-  //     setElevatorState(newArray);
-  //     console.log('elevatorState 1st timeout', elevatorState)
-
-  //   }, doorOpeningDuration);
-
-  //   setTimeout(() => {
-  //     let newArray = [...elevatorState];
-  //     newArray[freeElevatorIndex].dStyle = {
-  //       width: '100%',
-  //       transition: 'all ease-in-out 5s',
-  //     };
-  //     console.log('Inside 2nd setTimeout', freeElevatorIndex);
-  //     setElevatorState(newArray);
-  //     console.log('elevatorState 2nd timeout', elevatorState)
-  //   }, doorClosingDuration);
-    
-  //   setTimeout(() => {
-  //     let newArray = [...elevatorState];
-  //     let newQueue = [...liftReqQueue];
-  //     newArray[freeElevatorIndex].state = 'free';
-  //     console.log('Inside 3rd setTimeout', freeElevatorIndex);
-  //     console.log('elevatorState 3rd timeout', elevatorState);
-  //     console.log('newQueue', newQueue, liftReqQueue);
-
-  //     if (newQueue.length !== 0) {
-  //       console.log('I was run hereeeeeeee');
-  //       moveLiftTo(Number(newQueue[0]));
-  //       newQueue.shift();
-  //       setLiftReqQueue(newQueue);
-  //     }
-  //     setElevatorState(newArray);
-  //     console.log('liftReqQueue', liftReqQueue);
-  //   }, liftFreeDuration);
-  // }
-  function freeELevatorStates(freeElevatorIndex, duration) {
+  function freeELevatorStates(freeElevatorIndex, duration, liftQueue) {
     let doorOpeningDuration = duration * 1000;
     let doorClosingDuration = duration * 1000 + 2500;
-    let liftFreeDuration = duration * 1000 + 5000 ;
-    // debugger
-    console.log(duration, )
+    let liftFreeDuration = duration * 1000 + 5000;
+    //
     setTimeout(() => {
       let newArray = [...elevatorState];
-      newArray[freeElevatorIndex].dStyle = { width: '0px' , transition: 'all ease-in-out 2.5s'};
-    
-      setElevatorState(newArray);
-  
+      newArray[freeElevatorIndex].dStyle = {
+        width: '0px',
+        transition: 'all ease-in-out 2.5s',
+      };
 
+      setElevatorState(newArray);
     }, doorOpeningDuration);
 
     setTimeout(() => {
@@ -155,27 +112,19 @@ const Building = () => {
         width: '100%',
         transition: 'all ease-in-out 5s',
       };
-      // console.log('Inside 2nd setTimeout', freeElevatorIndex);
       setElevatorState(newArray);
-      // console.log('elevatorState 2nd timeout', elevatorState)
     }, doorClosingDuration);
 
     setTimeout(() => {
       let newArray = [...elevatorState];
       newArray[freeElevatorIndex].state = 'free';
-      // console.log('Inside 3rd setTimeout', freeElevatorIndex);
-      // console.log('elevatorState 3rd timeout', elevatorState)
- 
-      if (liftReqQueue.length !== 0) {
-        moveLiftTo(Number(liftReqQueue[0]));
-        setLiftReqQueue(prev => {
-          prev.shift()
-          return prev;
-        })
+      if (liftReqQueue.current.length !== 0) {
+        moveLiftTo(Number(liftReqQueue.current[0]));
+
+        liftReqQueue.current.shift();
       }
-      
+
       setElevatorState(newArray);
-      console.log('liftReqQueue', liftReqQueue)
     }, liftFreeDuration);
   }
 
@@ -183,17 +132,16 @@ const Building = () => {
     let distance = (calledFloor - 1) * 110;
     let newState = [...elevatorState];
     let freeElevatorIndex = newState.findIndex((ele) => ele.state === 'free');
-    let freeElevator = newState[freeElevatorIndex]; 
+    let freeElevator = newState[freeElevatorIndex];
 
     if (!freeElevator) {
-      setLiftReqQueue((prev) => [...prev, calledFloor]);
-      console.log('liftReqQueue', liftReqQueue);
+      liftReqQueue.current.push(calledFloor);
       return;
-    } 
+    }
 
     freeElevator.currentPos = distance;
     freeElevator.state = 'busy';
-  
+
     freeElevator.transitionDuration =
       Math.abs(Number(freeElevator.currentFloor) - Number(calledFloor)) * 2;
 
@@ -201,10 +149,10 @@ const Building = () => {
 
     freeELevatorStates(
       freeElevatorIndex,
-      freeElevator.transitionDuration
+      freeElevator.transitionDuration,
+      liftReqQueue
     );
     setElevatorState([...newState]);
-    console.log('elevatorState moveLiftTo', elevatorState)
   }
 
   return (
